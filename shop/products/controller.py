@@ -1,4 +1,5 @@
 import logging
+import re
 
 from faunadb import errors as faunaErrors
 from flask import request
@@ -24,9 +25,7 @@ class Products(Resource):
         """
         Returns list of products.
         """
-        resp = productRepository.get_products(**productParser.list_products_args.parse_args(request))
-        print(resp)
-        return resp
+        return productRepository.get_products(**productParser.list_products_args.parse_args(request))
 
     @api.expect(productParser.create_product_args)
     @api.marshal_with(productSerializer.product)

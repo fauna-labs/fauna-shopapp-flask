@@ -2,7 +2,7 @@ from faunadb import query as q
 from shop.fauna.client import FaunaClient, fauna
 
 
-def get_products(name=None, category=None, sort_by=None, per_page=5):
+def get_products(name=None, category=None, sort_by=None, size=5, after=None, before=None):
     sortDic = { 
         "price_asc":  q.index('products_sort_by_price_asc'),
         "price_desc": q.index('products_sort_by_price_desc'),
@@ -23,6 +23,8 @@ def get_products(name=None, category=None, sort_by=None, per_page=5):
     if(len(matches) == 0):
         matches.append(q.documents(q.collection('products')))
 
+    print(after)
+    print('>>')
     return fauna.query(
         q.map_(
             lambda _, ref: q.get(ref),
@@ -31,7 +33,9 @@ def get_products(name=None, category=None, sort_by=None, per_page=5):
                     q.intersection(matches),
                     sortDic[sort_by or 'name_asc']
                 ),
-                size=per_page
+                size=size,
+                after=after,
+                before=before
             )
             
         )

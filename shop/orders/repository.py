@@ -2,12 +2,12 @@ from faunadb import query as q
 from shop.fauna.client import FaunaClient
 
 
-def get_orders(secret):
+def get_orders(secret, after=None, before=None, size=5):
     client = FaunaClient(secret=secret)
     return client.query(
         q.map_(
             lambda ref: q.get(ref),
-            q.paginate(q.documents(q.collection('orders')))
+            q.paginate(q.documents(q.collection('orders')), size=size, after=after, before=before)
         )
     )
 

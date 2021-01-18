@@ -1,7 +1,8 @@
 from faunadb import query as q
 from flask_restx import inputs, reqparse
+from shop.fauna.parsers import getFaunaCursorRequestParser
 
-list_products_args = reqparse.RequestParser()
+list_products_args = getFaunaCursorRequestParser(collection='products')
 list_products_args.add_argument(
     'name',  required=False, case_sensitive=True,
     help='Partial name of product', store_missing=False
@@ -14,11 +15,6 @@ list_products_args.add_argument(
     'sort_by', required=False,
     choices=['name_asc', 'price_asc', 'price_desc'], store_missing=False, 
     default='name_asc', help='Sort products by some values'
-)
-list_products_args.add_argument(
-    'per_page', type=int, required=False,
-    choices=[5, 10, 20, 30, 40, 50], store_missing=False, 
-    default=5, help='Results per page {error_msg}'
 )
 
 

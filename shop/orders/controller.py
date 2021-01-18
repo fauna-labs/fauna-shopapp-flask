@@ -11,12 +11,16 @@ ns = api.namespace('orders', description='Operations related to orders')
 class Orders(Resource):
 
     @api.doc(security='apiKey')
+    @api.expect(orderParser.list_orders_args)
     @api.marshal_with(orderSerializer.orders_list)
     def get(self):
         """
         Returns list of orders.
         """
-        return orderRepository.get_orders(secret=request.headers.get("x-access-token"))
+        return orderRepository.get_orders(
+            secret=request.headers.get("x-access-token"),
+            **orderParser.list_orders_args.parse_args(request)
+        )
 
 @ns.route('/<order_ref>')
 class Order(Resource):

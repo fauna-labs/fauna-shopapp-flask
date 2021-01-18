@@ -44,6 +44,12 @@ def create_roles(client):
                         "write": True,
                         "create": True
                     }
+                },
+                {
+                    "resource": objects.Ref("check_if_categories_exists", objects.Ref("functions")),
+                    "actions": {
+                        "call": True
+                    }
                 }
             ]
         },

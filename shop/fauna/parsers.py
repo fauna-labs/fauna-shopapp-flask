@@ -3,7 +3,7 @@ from faunadb import query as q
 from flask_restx import reqparse
 
 
-class fauna_cursor_parser(object):
+class FaunaCursorParser(object):
     def __init__(self, collection, argument="argument"):
         self.collection = collection
 
@@ -18,7 +18,7 @@ def getFaunaCursorRequestParser(collection):
     fauna_cursors = reqparse.RequestParser()
 
     fauna_cursors.add_argument(
-        'after', type=fauna_cursor_parser(collection=collection), 
+        'after', type=FaunaCursorParser(collection=collection), 
         required=False, action='append',
         store_missing=False, help='Value of `after` field from previous request'
     )

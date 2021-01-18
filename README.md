@@ -138,6 +138,6 @@ However, as `q.collection` is available for privileges, i would expect that `q.r
 As after|before is part of index, this can be really huge. It can become an issue to pass this kinda of data from BE to mobile client, futhermore, BE should case about serialization/parsing this values.
 
 NodeJS driver do serialization on the fly and here is example of response
-![response example](http://url/to/img.png)
+![response example](https://github.com/fireridlle/faunadb-shop/blob/master/nodejs_cursor_response.png)
 
 For python driver, developer should care serialization/parsing by himself as by default, flask would serialize custom objects

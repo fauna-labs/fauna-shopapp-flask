@@ -14,7 +14,9 @@ class FaunaTime(fields.StringMixin, fields.Raw):
 class FaunaCursor(fields.StringMixin, fields.Raw):
     def format(self, value):
         if isinstance(value, objects.Ref):
-            return 'cursor_ref=' + value.id()
+            return 'cursor_ref=' + FaunaRef().format(value)
+        if isinstance(value, objects.FaunaTime):
+            return 'cursor_time=' + FaunaTime().format(value)
         else:
             return value
 

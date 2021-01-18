@@ -6,11 +6,16 @@ from flask_restx import reqparse
 class FaunaCursorParser(object):
     def __init__(self, collection, argument="argument"):
         self.collection = collection
+        self.parsers = {
+            "cursor_ref": lambda value: q.ref(q.collection(self.collection), value),
+            "cursor_time": lambda value: q.time(value),
+        }
 
     def __call__(self, value):
-        splitted = value.split('cursor_ref=')
-        if(len(splitted) == 2):
-            return q.ref(q.collection(self.collection), splitted[1])
+        splitted = value.split('=')
+
+        if splitted[0] in self.parsers:
+            return self.parsers[splitted[0]](splitted[1])
         else:
             return splitted[0]
 
@@ -24,7 +29,7 @@ def getFaunaCursorRequestParser(collection):
     )
 
     fauna_cursors.add_argument(
-        'before', type=fauna_cursor_parser(collection=collection), 
+        'before', type=FaunaCursorParser(collection=collection), 
         required=False, action='append',
         store_missing=False, help='Value of `before` field from previous request'
     )

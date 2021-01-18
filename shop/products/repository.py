@@ -23,8 +23,6 @@ def get_products(name=None, category=None, sort_by=None, size=5, after=None, bef
     if(len(matches) == 0):
         matches.append(q.documents(q.collection('products')))
 
-    print(after)
-    print('>>')
     return fauna.query(
         q.map_(
             lambda _, ref: q.get(ref),

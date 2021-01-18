@@ -13,7 +13,7 @@ list_products_args.add_argument(
 )
 list_products_args.add_argument(
     'sort_by', required=False,
-    choices=['name_asc', 'price_asc', 'price_desc'], store_missing=False, 
+    choices=['name_asc', 'price_asc', 'price_desc', 'created_at_asc'], store_missing=False, 
     default='name_asc', help='Sort products by some values'
 )
 

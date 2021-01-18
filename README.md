@@ -140,4 +140,4 @@ As after|before is part of index, this can be really huge. It can become an issu
 NodeJS driver do serialization on the fly and here is example of response
 ![response example](https://github.com/fireridlle/faunadb-shop/blob/master/nodejs_cursor_response.png)
 
-For python driver, developer should care serialization/parsing by himself as by default, flask would serialize custom objects
+For python driver, developer should care about serialization/parsing by himself as by default, flask would serialize custom objects

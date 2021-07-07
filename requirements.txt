@@ -26,8 +26,6 @@ pyrsistent==0.17.3
 python-dotenv==0.15.0
 pytz==2020.5
 requests==2.25.1
--e git+https://github.com/postrational/rest_api_demo.git@1660892257a41e19f8c7b21c81fbb05be5c188d5#egg=rest_api_demo
--e git+https://github.com/postrational/rest_api_demo.git@1660892257a41e19f8c7b21c81fbb05be5c188d5#egg=shop_faunadb
 six==1.15.0
 typing-extensions==3.7.4.3
 urllib3==1.26.2

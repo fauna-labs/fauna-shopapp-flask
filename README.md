@@ -27,8 +27,8 @@ Steps required to install project and how to get the development environment run
 First clone the application code into any directory on your disk:
 ```
 $ cd /path/to/my/workspace/
-$ git clone !!!!!update to my link
-$ cd shop
+$ git clone https://github.com/fireridlle/faunadb-shop.git
+$ cd faunadb-shop
 ```
 
 Create a virtual Python environment in a directory named `venv`, activate the virtualenv and install required dependencies using `pip`:
@@ -44,18 +44,21 @@ Admin token is required to init database (create roles for application)
 Server token is required for db connection from application
 Create `.env` file at `shop` directory with following content
 ```
-FAUNA_ADMIN_SECRET=
-FAUNA_SERVER_SECRET=
+FAUNA_ADMIN_SECRET=// required for seeding initial data
+FAUNA_SERVER_SECRET=// required for api usage
 ```
+They might be the same (with admin role)
+
+
 And run script to initialize collection, indexes, roles and seed some data
 ```
-python shop/fauna/init/int.py
+python -m shop.fauna.init.seed
 ```
 Current faunaDB python driver doesn't support `CreateFunction` feature, so go to Shell page at your dashboard and run command from file `shop/fauna/functions.py`
 
 Finally, run application
 ```
-python shop/app.py
+python -m shop.app
 ```
 
 Now you should be able to open SwaggerUI by accesing http://localhost:8888/api/ at your browser

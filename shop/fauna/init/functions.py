@@ -1,88 +1,94 @@
 
-# Functions are not supported by python driver. Here is plain FQL
+from faunadb import query as q
 
-# check if categories exists
-# CreateFunction({
-#     "name": "check_if_categories_exists",
-#     "role": "server",
-#     "body": Query(
-#         Lambda(
-#             "categories_ids",
-#             All(
-#             Map(
-#                 Var("categories_ids"),
-#                 Lambda("id", Exists(Ref(Collection("categories"), Var("id"))))
-#             )
-#             )
-#         )
-#     )
-# })
 
-# purchase product
-# CreateFunction({
-#     "name": "purchase",
-#     "role": "server",
-#     "body": Query(
-#         Lambda(
-#             "productRef",
-#             Let(
-#             {
-#                 product: Get(Var("productRef")),
-#                 productPrice: Select(["data", "price"], Var("product")),
-#                 productQuantity: Select(["data", "quantity"], Var("product")),
-#                 customerBalance: Select(["data", "balance"], Get(CurrentIdentity()))
-#             },
-#             If(
-#                 And(
-#                 GTE(Var("customerBalance"), Var("productPrice")),
-#                 GT(Var("productQuantity"), 0)
-#                 ),
-#                 Do(
-#                 Update(CurrentIdentity(), {
-#                     data: {
-#                     balance: Subtract(Var("customerBalance"), Var("productPrice"))
-#                     }
-#                 }),
-#                 Update(Var("productRef"), {
-#                     data: { quantity: Subtract(Var("productQuantity"), 1) }
-#                 }),
-#                 Create(Collection("orders"), {
-#                     data: {
-#                     customer: CurrentIdentity(),
-#                     product: Var("productRef"),
-#                     status: "purchased",
-#                     statusAt: Now()
-#                     }
-#                 })
-#                 ),
-#                 Abort("Not sufficient funds or product sold out")
-#             )
-#             )
-#         )
-#     )
-# })
+def init(client):
 
-# get order status history
-# CreateFunction({
-#   "name": "get_order_status_history",
-#   "role": "server",
-#   "body": Query(
-#     Lambda(orderRef => 
-#       Map(
-#         Filter(
-#           Select(
-#             ["data"],
-#             Paginate(Events(orderRef))
-#           ),
-#           Lambda(event => 
-#             And(
-#               Equals(Select(["action"], event), "update"),
-#               ContainsField("status", Select(["data"], event)),
-#               ContainsField("statusAt", Select(["data"], event))
-#             )
-#           )
-#         ),
-#         Lambda(history => Select(["data"], history))
-#       )
-#     ))
-# })
+  client.query(q.create_function({
+    "name": "check_if_categories_exists",
+    "role": "server",
+    "body": q.query(
+        q.lambda_(
+            "categories_ids",
+            q.all(
+            q.map_(
+                q.lambda_("id", q.exists(q.ref(q.collection("categories"), q.var("id")))),
+                q.var("categories_ids"),
+            )
+            )
+        )
+    )
+  }))
+
+  client.query(
+    q.create_function({
+    "name": "purchase",
+    "role": "server",
+    "body": q.query(
+        q.lambda_(
+            "productRef",
+            q.let(
+            {
+                "product": q.get(q.var("productRef")),
+                "productPrice": q.select(["data", "price"], q.var("product")),
+                "productQuantity": q.select(["data", "quantity"], q.var("product")),
+                "customerBalance": q.select(["data", "balance"], q.get(q.current_identity()))
+            },
+            q.if_(
+                q.and_(
+                q.gte(q.var("customerBalance"), q.var("productPrice")),
+                q.gt(q.var("productQuantity"), 0)
+                ),
+                q.do(
+                q.update(q.current_identity(), {
+                    "data": {
+                    "balance": q.subtract(q.var("customerBalance"), q.var("productPrice"))
+                    }
+                }),
+                q.update(q.var("productRef"), {
+                    "data": { "quantity": q.subtract(q.var("productQuantity"), 1) }
+                }),
+                q.create(q.collection("orders"), {
+                    "data": {
+                      "customer": q.current_identity(),
+                      "product": q.var("productRef"),
+                      "status": "purchased",
+                      "statusAt": q.now()
+                    }
+                })
+                ),
+                q.abort("Not sufficient funds or product sold out")
+            )
+            )
+        )
+    )
+})
+  )
+
+  client.query(
+    q.create_function({
+  "name": "get_order_status_history",
+  "role": "server",
+  "body": q.query(
+    q.lambda_("orderRef" ,
+      q.map_(
+        q.lambda_("history", q.select(["data"], q.var("history"))),
+        q.filter_(
+          q.lambda_("event", 
+            q.and_(
+              q.equals(q.select(["action"], q.var("event")), "update"),
+              q.contains_field("status", q.select(["data"], q.var("event"))),
+              q.contains_field("statusAt", q.select(["data"], q.var("event")))
+            )
+          ),
+          q.select(
+            ["data"],
+            q.paginate(q.events(q.var("orderRef")))
+          ),
+        ),
+      )
+    ))
+})
+
+  )
+  

@@ -3,7 +3,7 @@ from shop.fauna.client import wordPartsGenerator
 
 
 def create_collection(client):
-    collections = ["products", "users", "orders", "categories", "users"]
+    collections = ["products", "users", "orders", "categories"]
     client.query(q.map_(
         lambda collection_name: q.if_(
             q.exists(q.collection(collection_name)),

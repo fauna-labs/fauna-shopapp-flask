@@ -61,4 +61,7 @@ Finally, run application
 python -m shop.app
 ```
 
-Now you should be able to open SwaggerUI by accesing http://localhost:8888/api/ at your browser
+Now you should be able to open SwaggerUI by accessing http://localhost:8888/api/ at your browser
+
+For login you can use any accounts listed [here](https://github.com/fireridlle/faunadb-shop/blob/master/shop/fauna/init/seed_data.py#L54)
+

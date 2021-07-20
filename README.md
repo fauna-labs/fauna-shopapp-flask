@@ -54,7 +54,6 @@ And run script to initialize collection, indexes, roles and seed some data
 ```
 python -m shop.fauna.init.seed
 ```
-Current faunaDB python driver doesn't support `CreateFunction` feature, so go to Shell page at your dashboard and run command from file `shop/fauna/functions.py`
 
 Finally, run application
 ```

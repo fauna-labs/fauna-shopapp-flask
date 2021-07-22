@@ -31,7 +31,7 @@ To install the project and get the development environment running:
 1. First, clone the application code into any directory on your disk:
 ```
 $ cd /path/to/my/workspace/
-$ git clone https://github.com/fireridlle/faunadb-shop.git
+$ git clone https://github.com/fauna-labs/fauna-shopapp-flask.git
 $ cd faunadb-shop
 ```
 

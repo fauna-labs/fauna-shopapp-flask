@@ -2,10 +2,7 @@ from faunadb import query as q
 from faunadb.client import FaunaClient
 from faunadb.objects import Ref
 
-client = FaunaClient(
-    secret='fnAD3l4SEZACAbxXBR1wGB3hRx4FI8fph21uztQ7',
-    domain='db.fauna-preview.com'
-)
+client = FaunaClient()
 
 stream = None
 def on_start(event):
